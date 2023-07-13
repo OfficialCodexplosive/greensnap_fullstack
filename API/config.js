@@ -18,14 +18,14 @@ module.exports = {
       METER: 'm',
     },
     itemTypes: {
-      ALTGLAS : "Altglas",
-      ALTPAPIER : "Altpapier",
-      BIO : "Biomüll",
-      PLASTIK : "Plastik",
-      ELEKTROSCHROTT : "Elektroschrott",
-      SPERRMUELL : "Sperrmüll",
-      REIFEN : "Reifen",
-      CHEMIKALIEN : "Chemikalien",
-      AUTOWRACK : "Autowrack",
+      ALTGLAS : "ALTGLAS",
+      ALTPAPIER : "ALTPAPIER",
+      BIO : "BIOMÜLL",
+      PLASTIK : "PLASTIK",
+      ELEKTROSCHROTT : "ELEKTROSCHROTT",
+      SPERRMUELL : "SPERRMÜLL",
+      REIFEN : "REIFEN",
+      CHEMIKALIEN : "CHEMIKALIEN",
+      AUTOWRACK : "AUTOWRACK",
     }
   }

@@ -55,8 +55,12 @@ export default function Form()
                 
                 setPage(0);
                 const data = await res.json();
-                console.log(data);
                 
+                if( res.status === 200 )
+                {
+                    console.log("Item successfully posted");
+                    console.log(data);
+                }
             }
             catch(err)
             {

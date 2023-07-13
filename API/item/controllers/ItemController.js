@@ -8,6 +8,8 @@ resolve = require('path').resolve;
 const shapefilePath = resolve('storage/VG250_KRS.zip');
 const shapefileData = fs.readFileSync(shapefilePath);
 
+const { getMunicipalityByCoordinates } = require("../../common/MunicipalityByCoordinates");
+
 /* 
 async function fetchMunicipalityData()
 {
@@ -87,6 +89,34 @@ module.exports = {
   createItem: (req, res) => {
     const { body } = req;
 
+    getMunicipalityByCoordinates(body.latitude, body.longitude)
+      .then((municipalityData) => {
+        data = JSON.parse(municipalityData);
+        body.municipality = data.id;
+        ItemModel.createItem(body)
+          .then((item) => {
+            return res.status(200).json({
+              status: true,
+              data: item.toJSON(),
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            return res.status(500).json({
+              status: false,
+              error: err,
+            });
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.status(500).json({
+              status: false,
+              error: err,
+            });
+      });
+
+    /* 
     shp(shapefileData)
       .then((data) => {
         let municipalityId = "Invalid coordinates";
@@ -102,7 +132,6 @@ module.exports = {
           }
         }
         body.municipality = municipalityId;
-        console.log(body);
 
         ItemModel.createItem(body)
           .then((item) => {
@@ -126,7 +155,7 @@ module.exports = {
               error: err,
             });
       });   
-
+    */
     
   },
 

@@ -31,12 +31,19 @@ router.get(
   UserController.getAllUsers
 );
 
+/* 
 router.get(
   "/exposed",
   [],
   UserController.getAllUsers
 );
+*/
 
+router.get(
+  "/:lat/:lon",
+  [isAuthenticatedMiddleware.check],
+  UserController.getUsersByCoordinates
+)
 router.patch(
   "/change-role/:userId",
   [

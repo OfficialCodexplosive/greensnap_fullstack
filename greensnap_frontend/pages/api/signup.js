@@ -42,7 +42,6 @@ export default async function handler(req,res)
 
           res.setHeader("Set-Cookie", cookie);
           res.status(200).json({ 
-            status : true, 
             user : {
               firstName : data.data.firstName,
               lastName : data.data.lastName,
@@ -53,6 +52,6 @@ export default async function handler(req,res)
       } catch (error) 
       {
         console.error("Error:", error);
-        res.status(500).json({ status : false, error : error });
+        res.status(500).json({ data : error });
       }
 }

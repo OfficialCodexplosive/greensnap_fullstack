@@ -43,7 +43,7 @@ router.post(
   "/",
   [
     isAuthenticatedMiddleware.check,
-    CheckPermissionMiddleware.has(roles.ADMIN),
+    CheckPermissionMiddleware.has(roles.USER),
     SchemaValidationMiddleware.verify(createItemPayload),
   ],
   ItemController.createItem

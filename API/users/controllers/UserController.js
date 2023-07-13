@@ -1,5 +1,7 @@
 const UserModel = require("./../../common/models/User");
 
+const { getMunicipalityByCoordinates } = require("../../common/MunicipalityByCoordinates");
+
 module.exports = {
   getUser: (req, res) => {
     const {
@@ -87,6 +89,37 @@ module.exports = {
         });
       })
       .catch((err) => {
+        return res.status(500).json({
+          status: false,
+          error: err,
+        });
+      });
+  },
+
+  getUsersByCoordinates: (req, res) => {
+    const { params : { lat, lon }, } = req;
+
+    getMunicipalityByCoordinates(lat, lon)
+      .then((municipalityData) => {
+        data = JSON.parse(municipalityData);
+        UserModel.findAllUsers({ jurisdiction : data.id })
+          .then((users) => {
+            return res.status(200).json({
+              status: true,
+              n_entries : users.length,
+              data: users,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            return res.status(500).json({
+              status: false,
+              error: err,
+            });
+          });
+      })
+      .catch((err) => {
+        console.log(err);
         return res.status(500).json({
           status: false,
           error: err,
