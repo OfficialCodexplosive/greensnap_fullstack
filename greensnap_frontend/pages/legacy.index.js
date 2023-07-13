@@ -25,7 +25,7 @@ function Home({ data }) {
 // This gets called on every request
 export async function getServerSideProps() {
   // Fetch data from external API
-  const res = await fetch('http://localhost:3000/user/exposed')
+  const res = await fetch(`${process.env.BACKEND_URL}/user/exposed`)
   const data = await res.json()
  
   // Pass data to the page via props

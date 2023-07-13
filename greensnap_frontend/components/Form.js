@@ -8,6 +8,7 @@ import { useState } from 'react'
 export default function Form()
 {
     const [page, setPage] = useState(0);
+    const [submitMessage, setSubmitMessage] = useState(null);
 
     const [formData, setFormData] = useState({
         firstName : "",
@@ -40,7 +41,7 @@ export default function Form()
     {
         e.stopPropagation();
         e.preventDefault();
-        setPage(page + 1);
+        
         if(page === 2)
         {
             try
@@ -53,8 +54,8 @@ export default function Form()
                     body: JSON.stringify(formData)
                 });
                 
-                setPage(0);
                 const data = await res.json();
+                setSubmitMessage(res.status);
                 
                 if( res.status === 200 )
                 {
@@ -66,6 +67,8 @@ export default function Form()
             {
                 console.error(err)
             }
+        }else{
+            setPage(page + 1);
         }
     }
 
@@ -94,6 +97,7 @@ export default function Form()
                             onClick={handleSubmit}>{ page === 0 || page === 1 ? "Next" : "Submit" }</button>
                 </div>
             </form>
+            { submitMessage && <div className={styles.postMessage}>{submitMessage}</div> }
         </>
     )
 }

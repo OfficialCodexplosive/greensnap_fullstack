@@ -1,4 +1,5 @@
 import { parse } from 'cookie';
+import { Client } from "@googlemaps/google-maps-services-js";
 
 export default async function handler(req, res)
 {
@@ -14,7 +15,23 @@ export default async function handler(req, res)
             // get Lat and Long from GPS data
         }else
         {
-            // get Lat and Long from address
+            const address = `Germany, ${postalCode} ${city}, ${street} ${streetNumber}`;
+
+            const args = {
+                params: {
+                    key : process.env.GOOGLE_MAPS_API_KEY,
+                    address : address
+                }
+            };
+            const client = new Client();
+            const apiRes = await client.geocode(args);
+
+            if(apiRes.status === 200)
+            {
+                const data = apiRes.data.results[0].geometry.location;
+                lat = data.lat;
+                lon = data.lng;
+            }
         }
 
         var payload = {
@@ -24,6 +41,8 @@ export default async function handler(req, res)
             latitude : Number(lat),
             longitude : Number(lon),
         }
+
+        console.log(payload);
 
         try
         {
@@ -42,7 +61,7 @@ export default async function handler(req, res)
 
             let authToken = parsedCookies['gsnap-auth'];
 
-            const apiRes = await fetch('http://localhost:3000/item', {
+            const apiRes = await fetch(`${process.env.BACKEND_URL}/item`, {
                 method : 'POST',
                 headers : {
                     'Content-Type' : 'application/json',
@@ -52,7 +71,7 @@ export default async function handler(req, res)
             });
 
             const data = await apiRes.json();
-            res.status(200).json(data);
+            res.status(apiRes.status).json(data);
             return;
         
         }catch(err)

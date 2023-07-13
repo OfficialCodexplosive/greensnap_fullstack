@@ -11,23 +11,19 @@ export default async function handler(req,res)
     }
     const body = req.body;
 
-    const signupData = {
-        firstName : body.firstName,
-        lastName : body.lastName,
-        email : body.email,
+    const loginData = {
         username : body.username,
         password : body.password,
-        age : Number(body.age)
       };
   
       try
       {
-        const apiRes = await fetch(`${process.env.BACKEND_URL}/signup`, {
+        const apiRes = await fetch(`${process.env.BACKEND_URL}/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(signupData),
+          body: JSON.stringify(loginData),
         });
   
         const data = await apiRes.json();
@@ -43,10 +39,8 @@ export default async function handler(req,res)
           res.setHeader("Set-Cookie", cookie);
           res.status(200).json({ 
             user : {
-              firstName : data.data.firstName,
-              lastName : data.data.lastName,
-              email : data.data.email,
-              username : data.data.username,
+              username : data.data.user.username,
+              role : data.data.user.role,
             } });
         }
       } catch (error) 

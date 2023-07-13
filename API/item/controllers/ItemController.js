@@ -91,6 +91,7 @@ module.exports = {
 
     getMunicipalityByCoordinates(body.latitude, body.longitude)
       .then((municipalityData) => {
+        console.log(municipalityData);
         data = JSON.parse(municipalityData);
         body.municipality = data.id;
         ItemModel.createItem(body)

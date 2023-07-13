@@ -2,7 +2,7 @@ import styles from '@/styles/fetch.module.css'
 
 async function getData()
 {
-  const res = await fetch('http://localhost:3000/user/exposed')
+  const res = await fetch(`${process.env.BACKEND_URL}/user/exposed`)
   const data = await res.json();
 
   console.log( JSON.stringify(data) );
