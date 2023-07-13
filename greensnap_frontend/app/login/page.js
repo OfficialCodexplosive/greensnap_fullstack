@@ -1,8 +1,11 @@
 "use client"
 
 import styles from '@/styles/login.module.css'
+import { useState } from 'react'
 
 export default function Login() {
+  const [submitMessage, setSubmitMessage] = useState(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -28,6 +31,7 @@ export default function Login() {
         console.log("Login successful");
         console.log(data);
       }
+      setSubmitMessage(JSON.stringify(data));
     } catch (error) 
     {
       console.error("Error:", error);
@@ -52,6 +56,7 @@ export default function Login() {
           <button type="submit">Submit</button>
         </form>
       </div>
+      { submitMessage && <div>{submitMessage}</div> }
     </main>
   )
 }

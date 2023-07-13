@@ -2,32 +2,32 @@
 
 import styles from '@/styles/report.module.css'
 import Link from 'next/link'
-
+import { useState, useEffect } from 'react'
 
 
 export default function Manage()
 {
-    const handleSubmit = async (e) => {
-        try
-        {
-            const res = await fetch('/api/get-items', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            });
-            const data = await res.json();
-            console.log(data)
-        }catch(error)
-        {
-            console.error("Error:", error);
-        }
-    }
+    const [itemData, setItemData] = useState(null);
+    const [isLoading, setLoading] = useState(false);
+    
+    useEffect(() => {
+        setLoading(true);
+        fetch('/api/get-items', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }})
+            .then((res) => res.json())
+            .then((data) => {
+                setItemData(JSON.stringify(data));
+                setLoading(false)
+            })
+    },[]);
 
 
     return (
         <main className={styles.main}>
-            <button onClick={handleSubmit}>Get Items</button>
+            { !isLoading && <div>{itemData}</div> }
         </main>
     )
 }

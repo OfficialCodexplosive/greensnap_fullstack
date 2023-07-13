@@ -1,8 +1,11 @@
 "use client"
 
 import styles from '@/styles/signup.module.css'
+import { useState } from 'react'
 
 export default function Signup() {
+  const [submitMessage, setSubmitMessage] = useState(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -32,6 +35,7 @@ export default function Signup() {
         console.log("Signup successful");
         console.log(data);
       }
+      setSubmitMessage(JSON.stringify(data));
     } catch (error) 
     {
       console.error("Error:", error);
@@ -76,6 +80,7 @@ export default function Signup() {
           <button type="submit">Submit</button>
         </form>
       </div>
+      { submitMessage && <div>{submitMessage}</div> }
     </main>
   )
 }
