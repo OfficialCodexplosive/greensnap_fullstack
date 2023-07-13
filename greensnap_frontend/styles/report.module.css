@@ -1,0 +1,29 @@
+.itemForm
+{
+    background-color: #fff;
+    margin: 100px auto;
+    padding: 40px;
+    width: 70%;
+    min-width: 300px;
+}
+
+.itemForm input
+{
+    padding: 10px;
+    width: 100%;
+    font-size: 17px;
+    border: 1px solid #aaa;
+}
+
+.itemForm input.invalid
+{
+    background-color: #ffdddd;
+}
+
+.formTab
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 20px;
+}
