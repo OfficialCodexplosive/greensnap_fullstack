@@ -6,7 +6,9 @@ function Home() {
   return (
     <main className={styles.main}>
       <h1>Startseite</h1>
-      <Link href="/fetch">Müll melden</Link>
+      <Link href="/signup">Registrieren</Link>
+      <Link href="/login">Anmelden</Link>
+      <Link href="/report">Müll melden</Link>
     </main>
   )
 }

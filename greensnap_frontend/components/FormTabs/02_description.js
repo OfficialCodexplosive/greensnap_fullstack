@@ -23,7 +23,7 @@ export default function DescriptionTab({ formData, setFormData })
             <h2 className={styles.formTabHeader}>DEINEN FUND BESCHREIBEN</h2>
 
             <div className={styles.formTabContent}>
-                <div className={styles.formTabContentSection}>
+                <div className={`${styles.formTabContentSection} ${styles.formDropdown}`}>
                     <h3 className={styles.formContentHeader}>ART DES FUNDS</h3>
                     {/* <input 
                         type="dropdown" 

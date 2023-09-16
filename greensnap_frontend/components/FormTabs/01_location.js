@@ -1,7 +1,11 @@
 import styles from '@/styles/report.module.css'
+import dynamic from 'next/dynamic'
+import React from 'react'
 
 export default function LocationTab({ formData, setFormData })
 {
+    const [localizationType, setLocalizationType] = React.useState(null);
+
     const handleSelect = (e) => {
         e.stopPropagation();
         var sections = document.getElementsByClassName('localization_section');
@@ -16,13 +20,23 @@ export default function LocationTab({ formData, setFormData })
             }
         }
 
+        setLocalizationType(e.target.value);
         
         setFormData({
             ...formData,
-            localizationType: e.value,
+            localizationType: e.target.value,
         });
 
     }
+
+    const Map = React.useMemo(() => dynamic(
+        () => import('@/components/Map'), // replace '@components/map' with your component's location
+        { 
+          loading: () => <p>A map is loading</p>,
+          ssr: false // This line is important. It's what prevents server-side render
+        }
+      ), [localizationType])
+
     return (
         <div className={`${styles.formTab} formTab`}>
             <h2 className={styles.formTabHeader}>DEINEN STANDORT BESTIMMEN</h2>
@@ -47,7 +61,7 @@ export default function LocationTab({ formData, setFormData })
                 <div className={styles.formTabContentSection}>
                     <h3 className={styles.formContentHeader}>WIE SOLL DEIN STANDORT BESTIMMT WERDEN?</h3>
                     {/* https://codepen.io/jacobberglund/pen/mdPEza */}
-                    <div className={styles.formContentRow}>
+                    <div className={`${styles.formContentRow} ${styles.formContentRadio}`}>
                         <input 
                             type="radio" 
                             name="localizationType" 
@@ -66,7 +80,7 @@ export default function LocationTab({ formData, setFormData })
                     </div>
                 </div>
 
-                <div className={`${styles.formTabContentSection} localization_section localization_manual_section`}>
+                <div className={`${styles.formTabContentSection} ${styles.localizationSection} localization_section localization_manual_section`}>
                     <h3 className={styles.formContentHeader}>STRASSE, HAUSNUMMER</h3>
                     <div className={styles.formContentRow}>
                         <input 
@@ -81,7 +95,7 @@ export default function LocationTab({ formData, setFormData })
                                 });
                             }}
                             value={formData.street}/>
-                        <input 
+                        <input className={styles.flex0_5}
                             type="text" 
                             name="streetNumber" 
                             id="streetNumber" 
@@ -96,7 +110,7 @@ export default function LocationTab({ formData, setFormData })
                     </div>
                 </div>
 
-                <div className={`${styles.formTabContentSection} localization_section localization_manual_section`}>
+                <div className={`${styles.formTabContentSection} ${styles.localizationSection} localization_section localization_manual_section`}>
                     <h3 className={styles.formContentHeader}>ORT, POSTLEITZAHL</h3>
                     <div className={styles.formContentRow}>
                         <input 
@@ -126,8 +140,8 @@ export default function LocationTab({ formData, setFormData })
                     </div>
                 </div>
 
-                <div className={`${styles.formTabContentSection} localization_section localization_gps_section`}>
-                    <div className={styles.formGPSPlaceholder}></div>
+                <div className={`${styles.formTabContentSection} ${styles.localizationSection} localization_section localization_gps_section`}>
+                    <Map formData={formData} setFormData={setFormData}/>
                 </div>
             </div>
         </div>

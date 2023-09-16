@@ -1,7 +1,3 @@
-import { parse } from 'cookie';
-import { Client } from "@googlemaps/google-maps-services-js";
-
-
 async function getLatLon(addressData, isPrecise=true)
 {
     if(addressData.length == 0)
@@ -21,6 +17,11 @@ async function getLatLon(addressData, isPrecise=true)
         return await getLatLon(addressData.slice(0,-1),false);
     }
 
+    if(data[0].class !== "building")
+    {
+        isPrecise = false;
+    }
+
     return {query : address, precise : isPrecise, data : data[0]};
 }
 
@@ -28,17 +29,17 @@ export default async function handler(req, res)
 {
     if(req.method === "POST")
     {
-        const { typeOfItem, sizeOfItem, street, streetNumber, postalCode, city, localizationType, latitude, longitude } = req.body;
+        const { street, streetNumber, postalCode, city, localizationType } = req.body;
 
-        var lat = latitude;
-        var lon = longitude;
+        var lat = 0;
+        var lon = 0;
 
-        /*
         if(localizationType === "gps")
         {
             // get Lat and Long from GPS data
         }else
         {
+            console.log("GET COORDINATES", req.body);
             const address = `Germany, ${postalCode} ${city}, ${street} ${streetNumber}`;
 
             if(!process.env.NO_COST_MODE)
@@ -63,63 +64,11 @@ export default async function handler(req, res)
                 const addressData = [postalCode, city, street, streetNumber];
                 let data = await getLatLon(addressData);
 
-                if(!data.precise)
-                {
-                    
-                }
-
                 console.log(data);
                 return res.status(200).json(data);
             }
 
             
-        }
-        */
-        var payload = {
-            type : typeOfItem,
-            size : Number(sizeOfItem),
-            sizeUnit : 'cm',
-            latitude : Number(lat),
-            longitude : Number(lon),
-        }
-
-        console.log(payload);
-
-        try
-        {
-            const cookies = req.headers.cookie;
-            if(!cookies)
-            {
-                res.status(401).json({message:"Unauthorized"});
-                return;
-            }
-
-            const parsedCookies = parse(cookies);
-            if(!parsedCookies['gsnap-auth'])
-            {
-                return res.status(401).json({message:"Unauthorized"});
-            }
-
-            let authToken = parsedCookies['gsnap-auth'];
-
-            const apiRes = await fetch(`${process.env.BACKEND_URL}/item`, {
-                method : 'POST',
-                headers : {
-                    'Content-Type' : 'application/json',
-                    'Authorization' : `Bearer ${authToken}`
-                },
-                body : JSON.stringify(payload)
-            });
-
-            const data = await apiRes.json();
-            res.status(apiRes.status).json(data);
-            return;
-        
-        }catch(err)
-        {
-            console.error(err)
-            res.status(500).json({ data : err });
-            return;
         }
     }
 }

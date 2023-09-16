@@ -19,7 +19,9 @@ export default function Form()
         city : "",
         typeOfItem : "",
         sizeOfItem : "",
-        pictureOfItem : ""
+        pictureOfItem : "",
+        latitude : null,
+        longitude : null
     });
 
     const conditionalFormComponent = () => {
@@ -41,6 +43,60 @@ export default function Form()
     {
         e.stopPropagation();
         e.preventDefault();
+
+        if(page === 0)
+        {
+            try
+            {
+                if(formData.localizationType === "manuell")
+                {
+                    const coordinateData = {
+                        street : formData.street, 
+                        streetNumber : formData.streetNumber, 
+                        postalCode : formData.postalCode, 
+                        city : formData.city, 
+                        localizationType : formData.localizationType
+                    }
+    
+                    const res = await fetch('/api/get-coordinates', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(coordinateData)
+                    });
+                    
+                    const data = await res.json();
+                    
+    
+                    if(!data.precise)
+                    {
+                        setSubmitMessage("Die genauen Koordinaten konnten nicht ermittelt werden. Bitte bestimme den genauen Standort über die Karte. Deine Standortdaten werden nicht erhoben.");
+                        // AKTIVIERE KARTE
+                        return;
+                    }
+    
+                    setFormData({
+                        ...formData, 
+                        latitude : data.lat, 
+                        longitude : data.lng});
+                    
+                    if( res.status === 200 )
+                    {
+                        console.log("Queried coordinates");
+                        console.log(data);
+                    }
+                }else if (formData.localizationType === "gps") {
+                    console.log("GPS Coordinates", formData.latitude, formData.longitude)
+                } else {
+                    
+                }
+            }
+            catch(err)
+            {
+                console.error(err)
+            }
+        }
         
         if(page === 2)
         {
@@ -88,13 +144,13 @@ export default function Form()
                         page > 0 && <button type="button" 
                                             className={styles.formNavigationButton} 
                                             id="formNavigationButtonBack"
-                                            onClick={ () => setPage(page - 1) }>Back</button>
+                                            onClick={ () => setPage(page - 1) }>ZURÜCK</button>
                     }
                     
                     <button type="button" 
                             className={styles.formNavigationButton} 
                             id="formNavigationButtonNext"
-                            onClick={handleSubmit}>{ page === 0 || page === 1 ? "Next" : "Submit" }</button>
+                            onClick={handleSubmit}>{ page === 0 || page === 1 ? "WEITER" : "ABSCHICKEN" }</button>
                 </div>
             </form>
             { submitMessage && <div className={styles.postMessage}>{submitMessage}</div> }
