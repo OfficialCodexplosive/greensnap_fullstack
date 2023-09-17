@@ -1,3 +1,59 @@
+.postMessage
+{
+    position: fixed;
+    width: 100%;
+    font-family: var(--font-secondary);
+    font-weight: 400;
+    font-size: var(--size-header-tertiary);
+    width: 100%;
+    background-color: var(--color-accent);
+    left: 0;
+    top: -100%;
+    padding: 1rem;
+    color: var(--color-bg);
+    box-shadow: 0px 0px 40px 11px rgba(163,85,85,0.5);
+    transition: all 1s;
+
+}
+
+.postMessage.animate
+{
+    top: 0;
+}
+
+.formProgressBar
+{
+    position: relative;
+    content: "";
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-lightgray);
+    margin: 1rem 0 1.2rem 0;
+}
+
+.formProgressBar::after
+{
+    content: "";
+    position: absolute;
+    height: 100%;
+    background-color: var(--color-accent);
+    transition: all .5s;
+    width: 0%;
+}
+
+.formProgressBar[progression="1"]::after
+{
+    width: calc( 1/var(--no-pages) * 100%);
+}
+.formProgressBar[progression="2"]::after
+{
+    width: calc( 2/var(--no-pages) * 100%);
+}
+.formProgressBar[progression="3"]::after
+{
+    width: calc( 3/var(--no-pages) * 100%);
+}
+
 .itemForm
 {
     margin: auto;
@@ -160,11 +216,18 @@
     display: none;
 }
 
+.localizationSection >  p:first-of-type
+{
+    display: none;
+}
+
+
 .formNavigation
 {
     width: 100%;
     display: flex;
     gap: .5rem;
+    padding-top: 1rem;
 
 }
 
@@ -187,6 +250,82 @@
     margin: 0;
 }
 
+.formNavigation .formNavigationButton.btnNext
+{
+    flex: 3;
+    position: relative;
+}
+/*
+
+.formNavigation .formNavigationButton.btnNext::before
+{
+    content: "";
+    position: absolute;
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--color-accent);
+    transition: all .5s;
+    opacity: 0;
+}
+
+.formNavigation .formNavigationButton.btnNext.load::before
+{
+    opacity: 1;
+}*/
+
+.ldsring.load
+{
+    opacity: 1;
+}
+
+.ldsring {
+    display: inline-block;
+    position: absolute;
+    width: .75rem;
+    height: .75rem;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    left: calc(50% - 5ch);
+    opacity: 0;
+  }
+  .ldsring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--color-accent);
+    border-radius: 50%;
+    animation: ldsring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: var(--color-accent) transparent transparent transparent;
+  }
+  .ldsring div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+  .ldsring div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  .ldsring div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+  @keyframes ldsring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+.formNavigation .formNavigationButton.btnNext.btnSubmit
+{
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+}
+
 .localizationSection button
 {
     background-color: var(--color-accent);
@@ -199,4 +338,79 @@
     border-radius: 100%;
     border: none;
     font-size: 0;
+}
+
+.formTab input[type="number"]
+{
+    appearance: unset;
+}
+
+.formTab input[type="number"]::-webkit-inner-spin-button,
+.formTab input[type="number"]::-webkit-outer-spin-button
+{
+    opacity: 1;
+}
+
+.formTab input[type="file"]
+{
+    display: none;
+}
+
+.formTab label.formTabContentSectionLabel
+{
+
+    position: relative;
+    flex: 1;
+    background-color: transparent;
+    background-image: url('data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%0A%20%20%20height%3D%2248%22%0A%20%20%20viewBox%3D%220%20-960%20960%20960%22%0A%20%20%20width%3D%2248%22%0A%20%20%20version%3D%221.1%22%0A%20%20%20id%3D%22svg4%22%0A%20%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%0A%20%20%20xmlns%3Asvg%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%3Cdefs%0A%20%20%20%20%20id%3D%22defs8%22%20%2F%3E%0A%20%20%3Cpath%0A%20%20%20%20%20d%3D%22M200-160q-22.25%200-38.817-16.567-16.568-16.567-16.568-38.817v-529.232q0-22.25%2016.568-38.817Q177.75-800%20200-800h358.231v30.769H200q-10.769%200-17.692%206.923t-6.923%2017.692v529.232q0%2010.769%206.923%2017.692T200-190.769h529.231q10.769%200%2017.692-6.923t6.923-17.692v-357.231h30.77v357.231q0%2022.25-16.568%2038.817Q751.481-160%20729.231-160H200Zm504.615-478.769v-81h-80.23v-30.77h80.23v-80.23h30.77v80.23h80.231v30.77h-80.231v81h-30.77Zm-420%20337.538H650.77L540.616-447.846l-107.77%20135.461-71.692-86.308-76.539%2097.462Zm-109.23-468v578.462-578.462Z%22%0A%20%20%20%20%20id%3D%22path2%22%0A%20%20%20%20%20style%3D%22fill%3A%23bf6464%3Bfill-opacity%3A1%22%20%2F%3E%0A%3C%2Fsvg%3E%0A');
+    background-repeat: no-repeat;
+    background-size: 15%;
+    background-position: center;
+    border: none;
+    padding: 12vh 0;
+}
+
+.formTab label.formTabContentSectionLabel::after
+{
+    content: '';
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23BF6464FF' stroke-width='3' stroke-dasharray='5%2c 15' stroke-dashoffset='10' stroke-linecap='square'/%3e%3c/svg%3e");
+}
+
+.formTabContentSection.formFileUpload
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.formTabContentSection.formTabSummary
+{
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.formTabContentSection input:read-only
+{
+    border: 1.5px solid var(--color-gray);
+    background-color: transparent;
+    font-family: var(--font-secondary);
+}
+
+.formTabContentSection .formContentSubtext
+{
+    font-family: var(--font-secondary);
+    font-size: var(--size-step);
+    font-weight: 400;
+    color: var(--color-gray);
+}
+
+.formTabContentSection a
+{
+    color: var(--color-accent);
 }

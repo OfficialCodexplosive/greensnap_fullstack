@@ -19,6 +19,8 @@
   --color-gray: #A09F9F;
   --color-darkgray: #323232;
   --color-accent: #BF6464;
+
+  --no-pages: 3;
 }
 
 @media (prefers-color-scheme: dark) {

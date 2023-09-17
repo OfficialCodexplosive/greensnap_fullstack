@@ -57,6 +57,8 @@ export default function Form()
                         city : formData.city, 
                         localizationType : formData.localizationType
                     }
+
+                    triggerLoadingAnimation();
     
                     const res = await fetch('/api/get-coordinates', {
                         method: 'POST',
@@ -67,15 +69,16 @@ export default function Form()
                     });
                     
                     const data = await res.json();
+
+                    untriggerLoadingAnimation();
                     
     
                     if(!data.precise)
                     {
-                        setSubmitMessage("Die genauen Koordinaten konnten nicht ermittelt werden. Bitte bestimme den genauen Standort über die Karte. Deine Standortdaten werden nicht erhoben.");
-                        // AKTIVIERE KARTE
+                        setSubmitMessage("Koordinaten konnten nicht bestimmt werden. Bitte bestimme den genauen Standort über die Karte. Deine Standortdaten werden nicht erhoben.");
+                        triggerAnimation();
                         return;
                     }
-    
                     setFormData({
                         ...formData, 
                         latitude : data.lat, 
@@ -128,32 +131,55 @@ export default function Form()
         }
     }
 
+    const triggerAnimation = () => {
+        const message = document.getElementById("submitMessage");
+        message.classList.add(styles.animate);
+        setTimeout(() => {
+            message.classList.remove(styles.animate);
+        }, 10000);
+    }
+
+    const triggerLoadingAnimation = () => 
+    {
+        const formNavigationButtonNext = document.getElementById("spinner");
+        formNavigationButtonNext.classList.add(styles.load);
+    }
+
+    const untriggerLoadingAnimation = () => 
+    {
+        const formNavigationButtonNext = document.getElementById("spinner");
+        formNavigationButtonNext.classList.remove(styles.load);
+    }
+
     return (
         <>
             <form className={`${styles.itemForm} itemForm`} action="">
                 <div className={styles.formHeader}>
                     <h1>MUELL MELDEN</h1>
-                    <div className={styles.formProgressBar}></div>
+                    <div className={styles.formProgressBar} progression={page}></div>
                     <div className={styles.formProgressText}>SCHRITT {page+1}/3</div>
                 </div>
 
                 { conditionalFormComponent() }
-
+               
                 <div className={styles.formNavigation}>
                     {
                         page > 0 && <button type="button" 
-                                            className={styles.formNavigationButton} 
+                                            className={`${styles.formNavigationButton} ${styles.btnBack}`} 
                                             id="formNavigationButtonBack"
                                             onClick={ () => setPage(page - 1) }>ZURÜCK</button>
                     }
                     
                     <button type="button" 
-                            className={styles.formNavigationButton} 
+                            className={`${styles.formNavigationButton} ${styles.btnNext} ${page===0||page===1 ? "" : styles.btnSubmit}`} 
                             id="formNavigationButtonNext"
-                            onClick={handleSubmit}>{ page === 0 || page === 1 ? "WEITER" : "ABSCHICKEN" }</button>
+                            onClick={handleSubmit}>
+                                <div id="spinner" className={styles.ldsring}><div></div><div></div><div></div><div></div></div>
+                                { page === 0 || page === 1 ? "WEITER" : "ABSCHICKEN" }
+                    </button>
                 </div>
             </form>
-            { submitMessage && <div className={styles.postMessage}>{submitMessage}</div> }
+            <div id="submitMessage" className={styles.postMessage}>{submitMessage}</div>
         </>
     )
 }

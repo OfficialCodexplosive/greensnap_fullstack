@@ -50,15 +50,16 @@ export default function DescriptionTab({ formData, setFormData })
                         type="number" 
                         name="item_size" 
                         id="item_size" 
-                        default="50"
+                        min="1"
                         onChange={(e) => {
                             setFormData({ ...formData, sizeOfItem: e.target.value });
                         }}
                         value={formData.sizeOfItem}/>
                 </div>
 
-                <div className={styles.formTabContentSection}>
+                <div className={`${styles.formTabContentSection} ${styles.formFileUpload}`}>
                     <h3 className={styles.formContentHeader}>BILD DES FUNDS</h3>
+                    <label htmlFor="item_picture" className={styles.formTabContentSectionLabel}></label>
                     <input 
                         type="file" 
                         name="item_picture" 
