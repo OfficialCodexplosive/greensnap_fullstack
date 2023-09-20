@@ -89,10 +89,26 @@ export default function Form()
                         console.log("Queried coordinates");
                         console.log(data);
                     }
-                }else if (formData.localizationType === "gps") {
-                    console.log("GPS Coordinates", formData.latitude, formData.longitude)
-                } else {
-                    
+                }else if (formData.localizationType === "gps") 
+                {
+                    if (formData.latitude === null || formData.longitude === null)
+                    {
+                        setSubmitMessage("Koordinaten konnten nicht bestimmt werden. Bitte bestimme den Standort manuell. Deine Standortdaten werden nicht erhoben.");
+                        triggerAnimation();
+                        return;
+                    }
+                } else if (formData.localizationType === "") {
+                    setSubmitMessage("Standort kann nicht bestimmt werden. Bitte wähle eine Methode aus.");
+                    triggerAnimation();
+                    return;
+                }else
+                {
+                    if (formData.latitude === null || formData.longitude === null)
+                    {
+                        setSubmitMessage("Standort konnte nicht bestimmt werden.");
+                        triggerAnimation();
+                        return;
+                    }
                 }
             }
             catch(err)
@@ -105,6 +121,10 @@ export default function Form()
         {
             try
             {
+                const nextSpinner = document.getElementById("spinner");
+                nextSpinner.classList.add(styles.white);
+                triggerLoadingAnimation();
+
                 const res = await fetch('/api/post-item', {
                     method: 'POST',
                     headers: {
@@ -114,7 +134,12 @@ export default function Form()
                 });
                 
                 const data = await res.json();
+
+                untriggerLoadingAnimation();
+                nextSpinner.classList.remove(styles.white);
+
                 setSubmitMessage(res.status);
+                triggerAnimation();
                 
                 if( res.status === 200 )
                 {
@@ -141,14 +166,14 @@ export default function Form()
 
     const triggerLoadingAnimation = () => 
     {
-        const formNavigationButtonNext = document.getElementById("spinner");
-        formNavigationButtonNext.classList.add(styles.load);
+        const nextSpinner = document.getElementById("spinner");
+        nextSpinner.classList.add(styles.load);
     }
 
     const untriggerLoadingAnimation = () => 
     {
-        const formNavigationButtonNext = document.getElementById("spinner");
-        formNavigationButtonNext.classList.remove(styles.load);
+        const nextSpinner = document.getElementById("spinner");
+        nextSpinner.classList.remove(styles.load);
     }
 
     return (

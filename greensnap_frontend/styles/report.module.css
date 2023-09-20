@@ -158,14 +158,23 @@
     color: var(--color-gray);
 }
 
+/*.formTab .formContentRow
+{
+    display: -webkit-flex;
+    display: flex;
+    
+    width: 100%;
+}*/
+
 .formTab .formContentRow
 {
-    display: flex;
-    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .formTab input[type="radio"]
 {
+    display: none;
     visibility: hidden;
     height: 0;
     width: 0;
@@ -175,12 +184,14 @@
 .formTab .formContentRow:not(.formContentRadio)
 {
     gap: .5rem;
+    grid-template-columns: 2fr 1fr;
 }
 
 .formTab .formContentRow:not(.formContentRadio) input,
 .formTab .formContentRow.formContentRadio input[type="radio"]+label
 {
     flex: 1;
+    width: 100%;
 }
 
 .formTab .formContentRow input.flex0_5
@@ -231,6 +242,11 @@
 
 }
 
+.formNavigation .formNavigationButton:hover
+{
+    cursor: pointer;
+}
+
 .formNavigation .formNavigationButton
 {
     flex: 1;
@@ -279,6 +295,16 @@
 .ldsring.load
 {
     opacity: 1;
+}
+
+.ldsring.white
+{
+    left: calc(50% - 7ch);
+}
+
+.ldsring.white div
+{
+    border-color: var(--color-bg) transparent transparent transparent;
 }
 
 .ldsring {
@@ -356,9 +382,14 @@
     display: none;
 }
 
+.formDropdown
+{
+    cursor: pointer;
+}
+
 .formTab label.formTabContentSectionLabel
 {
-
+    cursor: pointer;
     position: relative;
     flex: 1;
     background-color: transparent;

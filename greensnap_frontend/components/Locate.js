@@ -30,10 +30,10 @@ class Locate extends React.Component {
             longitude: position.lng })
         });
 
-        locateBtn.addEventListener("click", (event) => {
+        locateBtn.addEventListener("click", async (event) => {
           event.stopPropagation();
           event.preventDefault();
-
+          
           map.locate().on("locationfound", function (e) 
           {
               map.flyTo(e.latlng, 18);
@@ -42,6 +42,12 @@ class Locate extends React.Component {
                 ...formData, 
                 latitude: e.latlng.lat, 
                 longitude: e.latlng.lng })
+          })
+          .on("locationerror", function (e) {
+            setFormData({ 
+              ...formData, 
+              status: "failed" 
+            })
           });
         });
         return locateBtn;

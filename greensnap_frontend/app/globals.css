@@ -21,6 +21,9 @@
   --color-accent: #BF6464;
 
   --no-pages: 3;
+
+  --filter-to-bg: brightness(0) saturate(100%) invert(99%) sepia(47%) saturate(404%) hue-rotate(293deg) brightness(104%) contrast(95%);
+  --filter-to-accent: brightness(0) saturate(100%) invert(71%) sepia(29%) saturate(3264%) hue-rotate(309deg) brightness(77%) contrast(91%);
 }
 
 @media (prefers-color-scheme: dark) {
