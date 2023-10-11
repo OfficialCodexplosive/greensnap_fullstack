@@ -24,6 +24,10 @@
 
   --filter-to-bg: brightness(0) saturate(100%) invert(99%) sepia(47%) saturate(404%) hue-rotate(293deg) brightness(104%) contrast(95%);
   --filter-to-accent: brightness(0) saturate(100%) invert(71%) sepia(29%) saturate(3264%) hue-rotate(309deg) brightness(77%) contrast(91%);
+
+  --navbar-height: 4em;
+
+  --padding-global: 3vw;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -46,7 +50,8 @@ body {
 }
 
 body {
-  padding: 3vw;
+  padding: var(--padding-global);
+  margin-top: var(--navbar-height);
   
   background-color: var(--color-bg);
   color: var(--color-darkgray);
