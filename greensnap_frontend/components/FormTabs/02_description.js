@@ -17,7 +17,11 @@ export default function DescriptionTab({ formData, setFormData })
                 </select>
             </label>
         )
+
+        
     }
+
+
     return (
         <div className={`${styles.formTab} formTab`}>
             <h2 className={styles.formTabHeader}>DEINEN FUND BESCHREIBEN</h2>
@@ -33,6 +37,7 @@ export default function DescriptionTab({ formData, setFormData })
                     */}
                     <Select
                         data={[
+                        { value: "", label: "BITTE AUSWAEHLEN"},
                         { value: 'ALTGLAS', label: 'ALTGLAS' },
                         { value: 'ALTPAPIER', label: 'ALTPAPIER' },
                         { value: 'ELEKTROSCHROTT', label: 'ELEKTROSCHROTT' },

@@ -2,6 +2,8 @@ import styles from '@/styles/report.module.css'
 import dynamic from 'next/dynamic'
 import React from 'react'
 
+import { useState, useEffect } from 'react'
+
 export default function LocationTab({ formData, setFormData })
 {
     const [localizationType, setLocalizationType] = React.useState(null);
@@ -37,25 +39,64 @@ export default function LocationTab({ formData, setFormData })
         }
       ), [localizationType])
 
+    const [userData, setUserData] = useState(null);
+    const [isLoggedIn, setLoggedIn] = useState(false);
+    
+    useEffect(() => {
+        fetch('/api/get-user', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }})
+            .then((res) => res.json())
+            .then((data) => {
+                if(data.message === "Unauthorized")
+                {
+                    setLoggedIn(false);
+                    return;
+                }
+                setUserData(data);
+                setLoggedIn(true);
+
+                
+            })
+    },[]);
+
+    
+
     return (
         <div className={`${styles.formTab} formTab`}>
             <h2 className={styles.formTabHeader}>DEINEN STANDORT BESTIMMEN</h2>
 
             <div className={styles.formTabContent}>
                 <div className={styles.formTabContentSection}>
-                    <h3 className={styles.formContentHeader}>WIE HEISST DU?</h3>
-                    <input 
-                        type="text" 
-                        name="firstName" 
-                        id="firstName" 
-                        placeholder="MAX MUSTERMANN"
-                        onChange={(e) => {
-                            setFormData({
-                                ...formData,
-                                firstName: e.target.value,
-                            });
-                        }}
-                        value={formData.firstName}/>
+                    
+
+                    { isLoggedIn ? 
+                        (
+                            <></>
+                        )
+
+                        :
+
+                        (
+                            <>
+                                <h3 className={styles.formContentHeader}>WIE HEISST DU?</h3>
+                                <input 
+                                    type="text" 
+                                    name="firstName" 
+                                    id="firstName" 
+                                    placeholder="MAX MUSTERMANN"
+                                    onChange={(e) => {
+                                        setFormData({
+                                            ...formData,
+                                            firstName: e.target.value,
+                                        });
+                                    }}
+                                    value={formData.firstName}/>
+                            </>
+                        )
+                    }
                 </div>
 
                 <div className={styles.formTabContentSection}>

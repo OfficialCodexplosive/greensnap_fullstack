@@ -15,6 +15,8 @@
   --size-btn-nav: var(--size-step);
 
   --color-bg: #F9F8F6;
+  --color-bg-rgba-1: rgba(249,248,246,.75);
+  --color-bg-rgba-0: rgba(249,248,246,0);
   --color-lightgray: #F0EFED;
   --color-gray: #A09F9F;
   --color-darkgray: #323232;

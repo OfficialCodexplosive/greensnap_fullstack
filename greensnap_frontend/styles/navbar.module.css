@@ -3,7 +3,6 @@
     content: '';
     height: var(--navbar-height);
     width: 100%;
-    background-color: none;
     color: var(--color-darkgray);
     position: fixed;
     left: 0;
@@ -12,6 +11,10 @@
     font-size: var(--size-step);
     font-family: var(--font-secondary);
     text-transform: uppercase;
+
+    backdrop-filter: blur(2.5px);
+    background: var(--color-bg);
+    background: linear-gradient(180deg, var(--color-bg-rgba-1) 0%, var(--color-bg-rgba-0) 100%);
 }
 
 .navbar ul

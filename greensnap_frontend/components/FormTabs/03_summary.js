@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 export default function DescriptionTab({ formData })
 {
+    console.log(formData)
     return (
         <div className={`${styles.formTab} formTab`}>
             <h2 className={styles.formTabHeader}>ÜBERBLICK</h2>
@@ -20,7 +21,7 @@ export default function DescriptionTab({ formData })
                     <h3 className={styles.formContentHeader}>FUND</h3>
                     <input type="text" name="summary_item_type" id="summary_item_type" placeholder={formData.typeOfItem} readOnly/>
                     <input type="text" name="summary_item_size" id="summary_item_size" placeholder={`${formData.sizeOfItem} CM`} readOnly/>
-                    <input type="text" name="summary_item_place" id="summary_item_place" placeholder={formData.city} readOnly/>
+                    <input type="text" name="summary_item_place" id="summary_item_place" placeholder={`${formData.city}`.toUpperCase()} readOnly/>
                 </div>
             </div>
         </div>

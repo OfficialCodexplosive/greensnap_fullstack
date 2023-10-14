@@ -97,6 +97,46 @@ export default function Form()
                         triggerAnimation();
                         return;
                     }
+
+                    const geoData = {
+                        lat : formData.latitude, 
+                        lon : formData.longitude
+                    }
+
+                    triggerLoadingAnimation();
+    
+                    const res = await fetch('/api/get-address', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(geoData)
+                    });
+                    
+                    const data = await res.json();
+
+                    untriggerLoadingAnimation();
+                    
+                    /* 
+                    if(!data.precise)
+                    {
+                        setSubmitMessage("Koordinaten konnten nicht bestimmt werden. Bitte bestimme den genauen Standort über die Karte. Deine Standortdaten werden nicht erhoben.");
+                        triggerAnimation();
+                        return;
+                    }
+                    setFormData({
+                        ...formData, 
+                        street : data.street, 
+                        streetNumber : data.streetNumber, 
+                        postalCode : data.postalCode, 
+                        city : data.city, 
+                        localizationType : data.localizationType});
+                    
+                    if( res.status === 200 )
+                    {
+                        console.log("Queried coordinates");
+                        console.log(data);
+                    }*/
                 } else if (formData.localizationType === "") {
                     setSubmitMessage("Standort kann nicht bestimmt werden. Bitte wähle eine Methode aus.");
                     triggerAnimation();
@@ -109,6 +149,29 @@ export default function Form()
                         triggerAnimation();
                         return;
                     }
+                }
+            }
+            catch(err)
+            {
+                console.error(err)
+            }
+        }
+
+        if(page === 1)
+        {
+            try
+            {
+                if(formData.typeOfItem === "" || formData.typeOfItem === null)
+                {
+                    setSubmitMessage("Wähle die Kategorie aus, die am besten zu deinem Fund passt.");
+                    triggerAnimation();
+                    return;
+                }
+                if(formData.sizeOfItem === "" || formData.sizeOfItem === null)
+                {
+                    setSubmitMessage("Gib eine geschätzte Größe für deinen Fund an.");
+                    triggerAnimation();
+                    return;
                 }
             }
             catch(err)
